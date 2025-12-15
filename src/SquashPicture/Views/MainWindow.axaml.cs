@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using SquashPicture.Services;
 using SquashPicture.ViewModels;
 
 namespace SquashPicture.Views;

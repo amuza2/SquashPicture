@@ -90,6 +90,11 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public async Task ProcessDroppedFilesAsync()
+    {
+        await ProcessQueuedImagesAsync();
+    }
+
     private async Task ProcessQueuedImagesAsync()
     {
         var queuedImages = Images.Where(i => i.Status == CompressionStatus.Queued).ToList();

@@ -9,7 +9,8 @@
         x:DataType="vm:MainWindowViewModel"
         Title="{Binding WindowTitle}"
         Width="600" Height="400"
-        MinWidth="500" MinHeight="300">
+        MinWidth="500" MinHeight="300"
+        >
 
     <Window.Resources>
         <converters:FileSizeConverter x:Key="FileSizeConverter"/>
@@ -61,58 +62,61 @@
         </Border>
 
         <!-- DataGrid with placeholder -->
-        <Grid Margin="10">
-            <!-- Placeholder text - shown when no files -->
-            <TextBlock Text="Drag and drop images here or click 'Add and compress'"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Opacity="0.5"
-                       FontSize="14"
-                       IsVisible="{Binding !HasFiles}"/>
-            
-            <!-- DataGrid -->
-            <DataGrid ItemsSource="{Binding Images}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      CanUserReorderColumns="False"
-                      CanUserResizeColumns="True"
-                      GridLinesVisibility="Horizontal"
-                      BorderThickness="0">
-                <DataGrid.Columns>
-                <!-- Filename Column -->
-                <DataGridTextColumn Header="Filename" 
-                                    Width="*"
-                                    Binding="{Binding FileName}"/>
+        <Border Margin="10" 
+                Background="Transparent">
+            <Grid>
+                <!-- Placeholder text - shown when no files -->
+                <TextBlock Text="Click 'Add and compress' to select images"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Opacity="0.5"
+                           FontSize="14"
+                           IsVisible="{Binding !HasFiles}"/>
+                
+                <!-- DataGrid -->
+                <DataGrid ItemsSource="{Binding Images}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserReorderColumns="False"
+                          CanUserResizeColumns="True"
+                          GridLinesVisibility="Horizontal"
+                          BorderThickness="0">
+                    <DataGrid.Columns>
+                        <!-- Filename Column -->
+                        <DataGridTextColumn Header="Filename" 
+                                            Width="*"
+                                            Binding="{Binding FileName}"/>
 
-                <!-- Original Size Column -->
-                <DataGridTextColumn Header="Old Size" 
-                                    Width="100"
-                                    Binding="{Binding OriginalSize, Converter={StaticResource FileSizeConverter}}"/>
+                        <!-- Original Size Column -->
+                        <DataGridTextColumn Header="Old Size" 
+                                            Width="100"
+                                            Binding="{Binding OriginalSize, Converter={StaticResource FileSizeConverter}}"/>
 
-                <!-- Compressed Size Column -->
-                <DataGridTextColumn Header="New Size" 
-                                    Width="100"
-                                    Binding="{Binding CompressedSize, Converter={StaticResource FileSizeConverter}}"/>
+                        <!-- Compressed Size Column -->
+                        <DataGridTextColumn Header="New Size" 
+                                            Width="100"
+                                            Binding="{Binding CompressedSize, Converter={StaticResource FileSizeConverter}}"/>
 
-                <!-- Compression Ratio Column -->
-                <DataGridTemplateColumn Header="Compressed" Width="120">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate x:DataType="vm:ImageItemViewModel">
-                            <TextBlock VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}">
-                                <TextBlock.Text>
-                                    <MultiBinding Converter="{StaticResource CompressionRatioConverter}">
-                                        <Binding Path="Status"/>
-                                        <Binding Path="CompressionRatio"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
+                        <!-- Compression Ratio Column -->
+                        <DataGridTemplateColumn Header="Compressed" Width="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate x:DataType="vm:ImageItemViewModel">
+                                    <TextBlock VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource CompressionRatioConverter}">
+                                                <Binding Path="Status"/>
+                                                <Binding Path="CompressionRatio"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
     </DockPanel>
 </Window>
