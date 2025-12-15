@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SquashPicture.Models;
@@ -9,6 +10,8 @@ namespace SquashPicture.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly IFileDialogService _fileDialogService;
+    private readonly ICompressionService _compressionService;
+    private CancellationTokenSource? _compressionCts;
     private static readonly string[] SupportedExtensions = [".png", ".jpg", ".jpeg"];
 
     [ObservableProperty]
@@ -19,15 +22,21 @@ public partial class MainWindowViewModel : ViewModelBase
     private bool _hasFiles;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddFilesCommand))]
+    [NotifyCanExecuteChangedFor(nameof(RecompressCommand))]
+    private bool _isCompressing;
+
+    [ObservableProperty]
     private string _windowTitle = "SquashPicture";
 
-    public MainWindowViewModel(IFileDialogService fileDialogService)
+    public MainWindowViewModel(IFileDialogService fileDialogService, ICompressionService compressionService)
     {
         _fileDialogService = fileDialogService;
+        _compressionService = compressionService;
         Images.CollectionChanged += (_, _) => UpdateState();
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanAddFiles))]
     private async Task AddFilesAsync()
     {
         var files = await _fileDialogService.OpenFileDialogAsync(
@@ -39,10 +48,13 @@ public partial class MainWindowViewModel : ViewModelBase
             return;
 
         AddFiles(files);
+        await ProcessQueuedImagesAsync();
     }
 
-    [RelayCommand(CanExecute = nameof(HasFiles))]
-    private void Recompress()
+    private bool CanAddFiles() => !IsCompressing;
+
+    [RelayCommand(CanExecute = nameof(CanRecompress))]
+    private async Task RecompressAsync()
     {
         foreach (var image in Images)
         {
@@ -51,7 +63,11 @@ public partial class MainWindowViewModel : ViewModelBase
             image.ErrorMessage = null;
             image.IsRecompression = true;
         }
+
+        await ProcessQueuedImagesAsync();
     }
+
+    private bool CanRecompress() => HasFiles && !IsCompressing;
 
     public void AddFiles(IEnumerable<string> paths)
     {
@@ -64,6 +80,51 @@ public partial class MainWindowViewModel : ViewModelBase
                 continue;
 
             Images.Add(new ImageItemViewModel(path));
+        }
+    }
+
+    private async Task ProcessQueuedImagesAsync()
+    {
+        var queuedImages = Images.Where(i => i.Status == CompressionStatus.Queued).ToList();
+        if (queuedImages.Count == 0)
+            return;
+
+        IsCompressing = true;
+        _compressionCts = new CancellationTokenSource();
+
+        try
+        {
+            var options = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = Environment.ProcessorCount,
+                CancellationToken = _compressionCts.Token
+            };
+
+            await Parallel.ForEachAsync(queuedImages, options, async (imageVm, ct) =>
+            {
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                    imageVm.Status = CompressionStatus.Compressing);
+
+                var result = await _compressionService.CompressAsync(imageVm.FullPath, null, ct);
+
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    imageVm.UpdateFromResult(result);
+                    if (result.Success)
+                    {
+                        imageVm.OriginalSize = result.OriginalSize;
+                    }
+                });
+            });
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        finally
+        {
+            IsCompressing = false;
+            _compressionCts?.Dispose();
+            _compressionCts = null;
         }
     }
 

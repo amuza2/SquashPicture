@@ -38,6 +38,7 @@ public partial class App : Application
     private static void ConfigureServices(IServiceCollection services, MainWindow mainWindow)
     {
         services.AddSingleton<IFileDialogService>(new FileDialogService(mainWindow));
+        services.AddSingleton<ICompressionService, CompressionService>();
         services.AddSingleton<MainWindowViewModel>();
     }
 }
