@@ -16,6 +16,7 @@ public partial class App : Application
     private MainWindow? _mainWindow;
     private MainWindowViewModel? _viewModel;
     private NativeMenuItem? _toggleMenuItem;
+    private ISettingsService? _settingsService;
     private const string AppIcon = "icons8-image-100.png";
 
     public override void Initialize()
@@ -33,8 +34,13 @@ public partial class App : Application
             ConfigureServices(services, _mainWindow);
             var serviceProvider = services.BuildServiceProvider();
             
+            _settingsService = serviceProvider.GetRequiredService<ISettingsService>();
+            _settingsService.Load();
+            
             _viewModel = serviceProvider.GetRequiredService<MainWindowViewModel>();
             _mainWindow.DataContext = _viewModel;
+            
+            RestoreWindowState();
             
             desktop.MainWindow = _mainWindow;
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -144,9 +150,48 @@ public partial class App : Application
 
     private void QuitApplication()
     {
+        SaveWindowState();
+        _settingsService?.Save();
+        
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.Shutdown();
+        }
+    }
+    
+    private void RestoreWindowState()
+    {
+        if (_mainWindow is null || _settingsService is null) return;
+        
+        var settings = _settingsService.Settings;
+        
+        // Restore window size
+        if (settings.WindowWidth > 0 && settings.WindowHeight > 0)
+        {
+            _mainWindow.Width = settings.WindowWidth;
+            _mainWindow.Height = settings.WindowHeight;
+        }
+        
+        // Restore window position if valid
+        if (settings.WindowX >= 0 && settings.WindowY >= 0)
+        {
+            _mainWindow.Position = new PixelPoint((int)settings.WindowX, (int)settings.WindowY);
+        }
+    }
+    
+    private void SaveWindowState()
+    {
+        if (_mainWindow is null || _settingsService is null) return;
+        
+        var settings = _settingsService.Settings;
+        
+        // Only save if window is in normal state (not minimized/maximized)
+        if (_mainWindow.WindowState == WindowState.Normal)
+        {
+            settings.WindowWidth = _mainWindow.Width;
+            settings.WindowHeight = _mainWindow.Height;
+            settings.WindowX = _mainWindow.Position.X;
+            settings.WindowY = _mainWindow.Position.Y;
         }
     }
 
@@ -167,7 +212,9 @@ public partial class App : Application
 
     private static void ConfigureServices(IServiceCollection services, MainWindow mainWindow)
     {
-        services.AddSingleton<IFileDialogService>(new FileDialogService(mainWindow));
+        services.AddSingleton<ISettingsService, SettingsService>();
+        services.AddSingleton<IFileDialogService>(sp => 
+            new FileDialogService(mainWindow, sp.GetRequiredService<ISettingsService>()));
         services.AddSingleton<ICompressionService, CompressionService>();
         services.AddSingleton<MainWindowViewModel>();
     }
