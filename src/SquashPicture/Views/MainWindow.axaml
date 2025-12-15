@@ -37,7 +37,7 @@
                             Padding="15,8">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <TextBlock Text="+" FontSize="16" FontWeight="Bold"/>
-                            <TextBlock Text="Add and compress" VerticalAlignment="Center"/>
+                            <TextBlock Text="Add" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 

@@ -22,7 +22,6 @@ public partial class MainWindowViewModel : ViewModelBase
     private bool _hasFiles;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(AddFilesCommand))]
     [NotifyCanExecuteChangedFor(nameof(RecompressCommand))]
     private bool _isCompressing;
 
@@ -43,7 +42,7 @@ public partial class MainWindowViewModel : ViewModelBase
         Images.CollectionChanged += (_, _) => UpdateState();
     }
 
-    [RelayCommand(CanExecute = nameof(CanAddFiles))]
+    [RelayCommand]
     private async Task AddFilesAsync()
     {
         var files = await _fileDialogService.OpenFileDialogAsync(
@@ -55,10 +54,8 @@ public partial class MainWindowViewModel : ViewModelBase
             return;
 
         AddFiles(files);
-        await ProcessQueuedImagesAsync();
+        _ = ProcessQueuedImagesAsync();
     }
-
-    private bool CanAddFiles() => !IsCompressing;
 
     [RelayCommand(CanExecute = nameof(CanRecompress))]
     private async Task RecompressAsync()
