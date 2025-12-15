@@ -29,6 +29,13 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private string _windowTitle = "SquashPicture";
 
+    [ObservableProperty]
+    private bool _replaceOriginalFiles;
+
+    private static readonly string OutputFolder = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+        "SquashPicture_Output");
+
     public MainWindowViewModel(IFileDialogService fileDialogService, ICompressionService compressionService)
     {
         _fileDialogService = fileDialogService;
@@ -105,7 +112,17 @@ public partial class MainWindowViewModel : ViewModelBase
                 await Dispatcher.UIThread.InvokeAsync(() =>
                     imageVm.Status = CompressionStatus.Compressing);
 
-                var result = await _compressionService.CompressAsync(imageVm.FullPath, null, ct);
+                string? outputPath = null;
+                if (!ReplaceOriginalFiles)
+                {
+                    if (!Directory.Exists(OutputFolder))
+                    {
+                        Directory.CreateDirectory(OutputFolder);
+                    }
+                    outputPath = Path.Combine(OutputFolder, imageVm.FileName);
+                }
+
+                var result = await _compressionService.CompressAsync(imageVm.FullPath, outputPath, null, ct);
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {

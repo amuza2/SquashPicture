@@ -12,19 +12,24 @@ public class PngCompressor : IImageCompressor
 
     public async Task<CompressionResult> CompressAsync(
         string inputPath,
+        string? outputPath = null,
         CancellationToken cancellationToken = default)
     {
         var stopwatch = Stopwatch.StartNew();
         var originalSize = new FileInfo(inputPath).Length;
+        var replaceOriginal = string.IsNullOrEmpty(outputPath);
+        var targetPath = outputPath ?? inputPath;
         string? backupPath = null;
 
         try
         {
-            backupPath = Path.Combine(
-                Path.GetTempPath(),
-                $"{Guid.NewGuid()}_{Path.GetFileName(inputPath)}");
-
-            File.Copy(inputPath, backupPath, overwrite: true);
+            if (replaceOriginal)
+            {
+                backupPath = Path.Combine(
+                    Path.GetTempPath(),
+                    $"{Guid.NewGuid()}_{Path.GetFileName(inputPath)}");
+                File.Copy(inputPath, backupPath, overwrite: true);
+            }
 
             using var image = await Image.LoadAsync(inputPath, cancellationToken);
 
@@ -40,13 +45,13 @@ public class PngCompressor : IImageCompressor
                 SkipMetadata = true
             };
 
-            await image.SaveAsPngAsync(inputPath, encoder, cancellationToken);
+            await image.SaveAsPngAsync(targetPath, encoder, cancellationToken);
 
-            var compressedSize = new FileInfo(inputPath).Length;
+            var compressedSize = new FileInfo(targetPath).Length;
 
-            if (compressedSize >= originalSize)
+            if (replaceOriginal && compressedSize >= originalSize)
             {
-                File.Copy(backupPath, inputPath, overwrite: true);
+                File.Copy(backupPath!, targetPath, overwrite: true);
                 compressedSize = originalSize;
             }
 
@@ -62,7 +67,7 @@ public class PngCompressor : IImageCompressor
         }
         catch (Exception ex)
         {
-            if (backupPath != null && File.Exists(backupPath))
+            if (replaceOriginal && backupPath != null && File.Exists(backupPath))
             {
                 try
                 {

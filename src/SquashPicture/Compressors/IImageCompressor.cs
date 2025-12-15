@@ -8,5 +8,6 @@ public interface IImageCompressor
 
     Task<CompressionResult> CompressAsync(
         string inputPath,
+        string? outputPath = null,
         CancellationToken cancellationToken = default);
 }

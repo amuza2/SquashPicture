@@ -10,19 +10,24 @@ public class JpegCompressor : IImageCompressor
 
     public async Task<CompressionResult> CompressAsync(
         string inputPath,
+        string? outputPath = null,
         CancellationToken cancellationToken = default)
     {
         var stopwatch = Stopwatch.StartNew();
         var originalSize = new FileInfo(inputPath).Length;
+        var replaceOriginal = string.IsNullOrEmpty(outputPath);
+        var targetPath = outputPath ?? inputPath;
         string? backupPath = null;
 
         try
         {
-            backupPath = Path.Combine(
-                Path.GetTempPath(),
-                $"{Guid.NewGuid()}_{Path.GetFileName(inputPath)}");
-
-            File.Copy(inputPath, backupPath, overwrite: true);
+            if (replaceOriginal)
+            {
+                backupPath = Path.Combine(
+                    Path.GetTempPath(),
+                    $"{Guid.NewGuid()}_{Path.GetFileName(inputPath)}");
+                File.Copy(inputPath, backupPath, overwrite: true);
+            }
 
             await Task.Run(() =>
             {
@@ -37,7 +42,7 @@ public class JpegCompressor : IImageCompressor
                 var originalQuality = image.Quality;
                 image.Quality = originalQuality;
 
-                image.Write(inputPath);
+                image.Write(targetPath);
 
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -45,15 +50,15 @@ public class JpegCompressor : IImageCompressor
                 {
                     OptimalCompression = true
                 };
-                optimizer.LosslessCompress(inputPath);
+                optimizer.LosslessCompress(targetPath);
 
             }, cancellationToken);
 
-            var compressedSize = new FileInfo(inputPath).Length;
+            var compressedSize = new FileInfo(targetPath).Length;
 
-            if (compressedSize >= originalSize)
+            if (replaceOriginal && compressedSize >= originalSize)
             {
-                File.Copy(backupPath, inputPath, overwrite: true);
+                File.Copy(backupPath!, targetPath, overwrite: true);
                 compressedSize = originalSize;
             }
 
@@ -69,7 +74,7 @@ public class JpegCompressor : IImageCompressor
         }
         catch (OperationCanceledException)
         {
-            if (backupPath != null && File.Exists(backupPath))
+            if (replaceOriginal && backupPath != null && File.Exists(backupPath))
             {
                 try
                 {
@@ -84,7 +89,7 @@ public class JpegCompressor : IImageCompressor
         }
         catch (Exception ex)
         {
-            if (backupPath != null && File.Exists(backupPath))
+            if (replaceOriginal && backupPath != null && File.Exists(backupPath))
             {
                 try
                 {

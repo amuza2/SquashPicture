@@ -19,6 +19,7 @@ public class CompressionService : ICompressionService
 
     public async Task<CompressionResult> CompressAsync(
         string filePath,
+        string? outputPath = null,
         IProgress<double>? progress = null,
         CancellationToken cancellationToken = default)
     {
@@ -41,10 +42,12 @@ public class CompressionService : ICompressionService
             };
         }
 
+        var replaceOriginal = string.IsNullOrEmpty(outputPath);
+
         try
         {
             var fileInfo = new FileInfo(filePath);
-            if (fileInfo.IsReadOnly)
+            if (replaceOriginal && fileInfo.IsReadOnly)
             {
                 return new CompressionResult
                 {
@@ -63,15 +66,21 @@ public class CompressionService : ICompressionService
             };
         }
 
-        return await compressor.CompressAsync(filePath, cancellationToken);
+        return await compressor.CompressAsync(filePath, outputPath, cancellationToken);
     }
 
     public async Task CompressBatchAsync(
         IEnumerable<ImageFile> files,
+        string? outputFolder = null,
         IProgress<(ImageFile file, CompressionResult result)>? progress = null,
         CancellationToken cancellationToken = default)
     {
         var fileList = files.ToList();
+
+        if (!string.IsNullOrEmpty(outputFolder) && !Directory.Exists(outputFolder))
+        {
+            Directory.CreateDirectory(outputFolder);
+        }
 
         var options = new ParallelOptions
         {
@@ -81,7 +90,13 @@ public class CompressionService : ICompressionService
 
         await Parallel.ForEachAsync(fileList, options, async (file, ct) =>
         {
-            var result = await CompressAsync(file.FullPath, null, ct);
+            string? outputPath = null;
+            if (!string.IsNullOrEmpty(outputFolder))
+            {
+                outputPath = Path.Combine(outputFolder, file.FileName);
+            }
+
+            var result = await CompressAsync(file.FullPath, outputPath, null, ct);
             progress?.Report((file, result));
         });
     }

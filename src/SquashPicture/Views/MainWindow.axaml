@@ -27,47 +27,58 @@
         <Border DockPanel.Dock="Top" 
                 Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
                 Padding="10">
-            <Grid ColumnDefinitions="Auto,*,Auto">
-                <!-- Add Files Button -->
-                <Button Grid.Column="0"
-                        Command="{Binding AddFilesCommand}"
-                        Padding="15,8"
-                        Margin="0,0,10,0">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="+" FontSize="16" FontWeight="Bold"/>
-                        <TextBlock Text="Add and compress" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
+            <StackPanel Spacing="8">
+                <!-- Top row: Buttons -->
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <!-- Add Files Button -->
+                    <Button Grid.Column="0"
+                            Command="{Binding AddFilesCommand}"
+                            Padding="15,8">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="+" FontSize="16" FontWeight="Bold"/>
+                            <TextBlock Text="Add and compress" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
 
-                <!-- Instruction Label -->
-                <TextBlock Grid.Column="1"
-                           Text="Drag and drop images onto the table"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Opacity="0.6"/>
+                    <!-- Checkbox in center -->
+                    <CheckBox Grid.Column="1"
+                              Content="Replace original files"
+                              IsChecked="{Binding ReplaceOriginalFiles}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
 
-                <!-- Recompress Button -->
-                <Button Grid.Column="2"
-                        Command="{Binding RecompressCommand}"
-                        Padding="15,8">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="↻" FontSize="16"/>
-                        <TextBlock Text="Recompress" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-            </Grid>
+                    <!-- Recompress Button -->
+                    <Button Grid.Column="2"
+                            Command="{Binding RecompressCommand}"
+                            Padding="15,8">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="↻" FontSize="16"/>
+                            <TextBlock Text="Recompress" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </Border>
 
-        <!-- DataGrid -->
-        <DataGrid ItemsSource="{Binding Images}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  CanUserReorderColumns="False"
-                  CanUserResizeColumns="True"
-                  GridLinesVisibility="Horizontal"
-                  BorderThickness="0"
-                  Margin="10">
-            <DataGrid.Columns>
+        <!-- DataGrid with placeholder -->
+        <Grid Margin="10">
+            <!-- Placeholder text - shown when no files -->
+            <TextBlock Text="Drag and drop images here or click 'Add and compress'"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Opacity="0.5"
+                       FontSize="14"
+                       IsVisible="{Binding !HasFiles}"/>
+            
+            <!-- DataGrid -->
+            <DataGrid ItemsSource="{Binding Images}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserReorderColumns="False"
+                      CanUserResizeColumns="True"
+                      GridLinesVisibility="Horizontal"
+                      BorderThickness="0">
+                <DataGrid.Columns>
                 <!-- Filename Column -->
                 <DataGridTextColumn Header="Filename" 
                                     Width="*"
@@ -100,7 +111,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </DockPanel>
 </Window>
