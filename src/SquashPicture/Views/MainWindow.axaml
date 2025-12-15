@@ -130,7 +130,7 @@
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>
-                        <TextBlock Text="ℹ" FontSize="18" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="🛈︎" FontSize="18" Foreground="{DynamicResource TextSecondaryBrush}"/>
                     </Button>
                 </StackPanel>
             </Grid>
