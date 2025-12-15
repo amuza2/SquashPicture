@@ -1,0 +1,12 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://SquashPicture/Styles/Colors.axaml"/>
+        <ResourceInclude Source="avares://SquashPicture/Styles/ButtonStyles.axaml"/>
+        <ResourceInclude Source="avares://SquashPicture/Styles/CheckBoxStyles.axaml"/>
+        <ResourceInclude Source="avares://SquashPicture/Styles/DataGridStyles.axaml"/>
+        <ResourceInclude Source="avares://SquashPicture/Styles/FlyoutStyles.axaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+</ResourceDictionary>

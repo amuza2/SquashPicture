@@ -1,0 +1,49 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Base Colors -->
+    <Color x:Key="BackgroundDark">#1a1a2e</Color>
+    <Color x:Key="BackgroundMedium">#16213e</Color>
+    <Color x:Key="BackgroundLight">#1f2940</Color>
+    <Color x:Key="SurfaceColor">#252a41</Color>
+    <Color x:Key="SurfaceHover">#2d3454</Color>
+    
+    <!-- Accent Colors -->
+    <Color x:Key="AccentPrimary">#4f46e5</Color>
+    <Color x:Key="AccentPrimaryHover">#6366f1</Color>
+    <Color x:Key="AccentSecondary">#06b6d4</Color>
+    <Color x:Key="AccentSuccess">#10b981</Color>
+    <Color x:Key="AccentWarning">#f59e0b</Color>
+    <Color x:Key="AccentError">#ef4444</Color>
+    
+    <!-- Text Colors -->
+    <Color x:Key="TextPrimary">#f8fafc</Color>
+    <Color x:Key="TextSecondary">#94a3b8</Color>
+    <Color x:Key="TextMuted">#64748b</Color>
+    
+    <!-- Border Colors -->
+    <Color x:Key="BorderDefault">#334155</Color>
+    <Color x:Key="BorderLight">#475569</Color>
+    
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="BackgroundDarkBrush" Color="{StaticResource BackgroundDark}"/>
+    <SolidColorBrush x:Key="BackgroundMediumBrush" Color="{StaticResource BackgroundMedium}"/>
+    <SolidColorBrush x:Key="BackgroundLightBrush" Color="{StaticResource BackgroundLight}"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}"/>
+    <SolidColorBrush x:Key="SurfaceHoverBrush" Color="{StaticResource SurfaceHover}"/>
+    
+    <SolidColorBrush x:Key="AccentPrimaryBrush" Color="{StaticResource AccentPrimary}"/>
+    <SolidColorBrush x:Key="AccentPrimaryHoverBrush" Color="{StaticResource AccentPrimaryHover}"/>
+    <SolidColorBrush x:Key="AccentSecondaryBrush" Color="{StaticResource AccentSecondary}"/>
+    <SolidColorBrush x:Key="AccentSuccessBrush" Color="{StaticResource AccentSuccess}"/>
+    <SolidColorBrush x:Key="AccentWarningBrush" Color="{StaticResource AccentWarning}"/>
+    <SolidColorBrush x:Key="AccentErrorBrush" Color="{StaticResource AccentError}"/>
+    
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMuted}"/>
+    
+    <SolidColorBrush x:Key="BorderDefaultBrush" Color="{StaticResource BorderDefault}"/>
+    <SolidColorBrush x:Key="BorderLightBrush" Color="{StaticResource BorderLight}"/>
+    
+</ResourceDictionary>

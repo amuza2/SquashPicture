@@ -1,0 +1,63 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Modern CheckBox Style -->
+    <ControlTheme x:Key="ModernCheckBox" TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="8,0,0,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Border x:Name="CheckBorder"
+                                Width="20"
+                                Height="20"
+                                CornerRadius="4"
+                                Background="{StaticResource SurfaceBrush}"
+                                BorderBrush="{StaticResource BorderDefaultBrush}"
+                                BorderThickness="1">
+                            <Panel>
+                                <Path x:Name="CheckMark"
+                                      Width="12"
+                                      Height="12"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Data="M 1.5 5 L 4.5 8 L 10.5 2"
+                                      Stroke="{StaticResource TextPrimaryBrush}"
+                                      StrokeThickness="2"
+                                      StrokeLineCap="Round"
+                                      IsVisible="False"/>
+                            </Panel>
+                        </Border>
+                        <ContentPresenter Grid.Column="1"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^:checked /template/ Border#CheckBorder">
+            <Setter Property="Background" Value="{StaticResource AccentPrimaryBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentPrimaryBrush}"/>
+        </Style>
+        
+        <Style Selector="^:checked /template/ Path#CheckMark">
+            <Setter Property="IsVisible" Value="True"/>
+        </Style>
+        
+        <Style Selector="^:pointerover /template/ Border#CheckBorder">
+            <Setter Property="BorderBrush" Value="{StaticResource AccentPrimaryBrush}"/>
+        </Style>
+        
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="0.5"/>
+        </Style>
+    </ControlTheme>
+    
+</ResourceDictionary>

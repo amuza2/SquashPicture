@@ -4,13 +4,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:SquashPicture.ViewModels"
         xmlns:converters="using:SquashPicture.Converters"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="500"
         x:Class="SquashPicture.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/icons8-image-100.png"
         Title="{Binding WindowTitle}"
-        Width="600" Height="400"
-        MinWidth="500" MinHeight="300"
-        >
+        Width="700" Height="500"
+        MinWidth="600" MinHeight="400"
+        Background="{DynamicResource BackgroundDarkBrush}">
 
     <Window.Resources>
         <converters:FileSizeConverter x:Key="FileSizeConverter"/>
@@ -25,106 +26,140 @@
         <KeyBinding Gesture="Ctrl+Q"/>
     </Window.KeyBindings>
 
-    <DockPanel>
-        <!-- Toolbar -->
-        <Border DockPanel.Dock="Top" 
-                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                Padding="10">
-            <StackPanel Spacing="8">
-                <!-- Top row: Buttons -->
-                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
-                    <!-- Add Files Button -->
-                    <Button Grid.Column="0"
-                            Command="{Binding AddFilesCommand}"
-                            Padding="15,8">
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- Modern Toolbar -->
+        <Border Grid.Row="0" 
+                Classes="toolbar"
+                Background="{DynamicResource BackgroundMediumBrush}"
+                Padding="16,12"
+                BorderThickness="0,0,0,1"
+                BorderBrush="{DynamicResource BorderDefaultBrush}">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                
+                <!-- Left: Primary Actions -->
+                <StackPanel Grid.Column="0" 
+                            Orientation="Horizontal" 
+                            Spacing="12">
+                    <Button Theme="{StaticResource PrimaryButton}"
+                            Command="{Binding AddFilesCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <TextBlock Text="+" FontSize="16" FontWeight="Bold"/>
-                            <TextBlock Text="Add" VerticalAlignment="Center"/>
+                            <TextBlock Text="+" FontSize="18" FontWeight="Bold" Margin="0,-2,0,0"/>
+                            <TextBlock Text="Add Images" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-
-                    <!-- Checkbox and Clear button in center -->
-                    <StackPanel Grid.Column="1" 
-                                Orientation="Horizontal" 
-                                HorizontalAlignment="Center"
-                                Spacing="16">
-                        <CheckBox Content="Replace original files"
-                                  IsChecked="{Binding ReplaceOriginalFiles}"
-                                  VerticalAlignment="Center"/>
-                        <Button Command="{Binding ClearCommand}"
-                                Padding="10,6"
-                                VerticalAlignment="Center">
-                            <TextBlock Text="Clear"/>
-                        </Button>
-                    </StackPanel>
-
-                    <!-- Recompress Button -->
-                    <Button Grid.Column="2"
-                            Command="{Binding RecompressCommand}"
-                            Padding="15,8">
+                    
+                    <Button Theme="{StaticResource SecondaryButton}"
+                            Command="{Binding RecompressCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <TextBlock Text="↻" FontSize="16"/>
                             <TextBlock Text="Recompress" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-
+                </StackPanel>
+                
+                <!-- Center: Options -->
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center"
+                            Spacing="16">
+                    <CheckBox Theme="{StaticResource ModernCheckBox}"
+                              Content="Replace original files"
+                              IsChecked="{Binding ReplaceOriginalFiles}"/>
+                </StackPanel>
+                
+                <!-- Right: Secondary Actions -->
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal" 
+                            Spacing="8">
+                    <Button Theme="{StaticResource SecondaryButton}"
+                            Command="{Binding ClearCommand}"
+                            Padding="12,10">
+                        <TextBlock Text="Clear"/>
+                    </Button>
+                    
                     <!-- Info Button -->
-                    <Button Grid.Column="3"
-                            Margin="8,0,0,0"
-                            Padding="8"
-                            Height="40"
+                    <Button Theme="{StaticResource IconButton}"
                             ToolTip.Tip="About SquashPicture">
                         <Button.Flyout>
-                            <Flyout Placement="BottomEdgeAlignedRight">
-                                <StackPanel Spacing="8" MinWidth="150">
-                                    <TextBlock Text="SquashPicture" FontWeight="Bold" FontSize="16"/>
-                                    <TextBlock Text="Version 1.0.0" Opacity="0.7"/>
+                            <Flyout Placement="BottomEdgeAlignedRight"
+                                    FlyoutPresenterTheme="{StaticResource ModernFlyoutPresenter}">
+                                <StackPanel Spacing="12" MinWidth="220">
+                                    <!-- App Header -->
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="SquashPicture" Classes="h2"/>
+                                        <TextBlock Text="Version 1.0.0" Classes="caption"/>
+                                    </StackPanel>
+                                    
                                     <Separator/>
-                                    <TextBlock Text="Keyboard Shortcuts" FontWeight="SemiBold"/>
-                                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,4,0,0">
-                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Alt+A" FontFamily="Consolas" Opacity="0.8"/>
-                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Add files" Margin="12,0,0,0"/>
-                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Alt+R" FontFamily="Consolas" Opacity="0.8"/>
-                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Recompress" Margin="12,0,0,0"/>
-                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Alt+C" FontFamily="Consolas" Opacity="0.8"/>
-                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="Clear" Margin="12,0,0,0"/>
-                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Ctrl+Q" FontFamily="Consolas" Opacity="0.8"/>
-                                        <TextBlock Grid.Row="3" Grid.Column="1" Text="Quit" Margin="12,0,0,0"/>
-                                    </Grid>
+                                    
+                                    <!-- Keyboard Shortcuts -->
+                                    <StackPanel Spacing="8">
+                                        <TextBlock Text="KEYBOARD SHORTCUTS" Classes="label"/>
+                                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,4,0,0">
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Alt+A" Classes="mono"/>
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="Add files" Classes="body-secondary" Margin="16,0,0,0"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Alt+R" Classes="mono"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="Recompress" Classes="body-secondary" Margin="16,0,0,0"/>
+                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Alt+C" Classes="mono"/>
+                                            <TextBlock Grid.Row="2" Grid.Column="1" Text="Clear" Classes="body-secondary" Margin="16,0,0,0"/>
+                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Ctrl+Q" Classes="mono"/>
+                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="Quit" Classes="body-secondary" Margin="16,0,0,0"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    
                                     <Separator/>
-                                    <TextBlock Text="Output Path" FontWeight="SemiBold"/>
-                                    <TextBlock Text="{Binding OutputFolderPath}" 
-                                               TextWrapping="Wrap" 
-                                               Opacity="0.8"
-                                               FontSize="11"/>
+                                    
+                                    <!-- Output Path -->
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="OUTPUT PATH" Classes="label"/>
+                                        <TextBlock Text="{Binding OutputFolderPath}" 
+                                                   TextWrapping="Wrap" 
+                                                   Classes="caption"
+                                                   MaxWidth="200"/>
+                                    </StackPanel>
+                                    
                                     <Separator/>
-                                    <Button Classes="hyperlink" 
-                                            Content="github"
+                                    
+                                    <!-- GitHub Link -->
+                                    <Button Theme="{StaticResource LinkButton}"
+                                            Content="View on GitHub"
                                             Tag="https://github.com/amuza2/SquashPicture"
                                             Click="OnGitHubLinkClick"
-                                            Padding="0"
-                                            HorizontalAlignment="Center"
-                                            Background="Transparent"/>
+                                            HorizontalAlignment="Center"/>
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>
-                        <TextBlock Text="🛈︎" FontSize="16"/>
+                        <TextBlock Text="ℹ" FontSize="18" Foreground="{DynamicResource TextSecondaryBrush}"/>
                     </Button>
-                </Grid>
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </Border>
 
-        <!-- DataGrid with placeholder -->
-        <Border Margin="10" 
-                Background="Transparent">
+        <!-- Main Content Area -->
+        <Border Grid.Row="1" 
+                Margin="16"
+                Background="{DynamicResource BackgroundLightBrush}"
+                CornerRadius="12"
+                BorderBrush="{DynamicResource BorderDefaultBrush}"
+                BorderThickness="1">
             <Grid>
-                <!-- Placeholder text - shown when no files -->
-                <TextBlock Text="Click 'Add' to select images"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Opacity="0.5"
-                           FontSize="14"
-                           IsVisible="{Binding !HasFiles}"/>
+                <!-- Placeholder - shown when no files -->
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Spacing="16"
+                            IsVisible="{Binding !HasFiles}">
+                    <TextBlock Text="🖼️" 
+                               FontSize="48" 
+                               HorizontalAlignment="Center"
+                               Opacity="0.5"/>
+                    <TextBlock Text="No images added yet" 
+                               Classes="placeholder"
+                               FontSize="18"/>
+                    <TextBlock Text="Click 'Add Images' or press Alt+A to get started" 
+                               Classes="caption"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
                 
                 <!-- DataGrid -->
                 <DataGrid ItemsSource="{Binding Images}"
@@ -132,18 +167,21 @@
                           IsReadOnly="True"
                           CanUserReorderColumns="False"
                           CanUserResizeColumns="True"
-                          GridLinesVisibility="Horizontal"
+                          GridLinesVisibility="None"
                           BorderThickness="0"
-                          HeadersVisibility="Column">
+                          HeadersVisibility="Column"
+                          Background="Transparent"
+                          Foreground="{DynamicResource TextPrimaryBrush}"
+                          RowBackground="Transparent"
+                          IsVisible="{Binding HasFiles}"
+                          Margin="8">
                     <DataGrid.Columns>
                         <!-- Status Icon Column -->
-                        <DataGridTemplateColumn Header="" Width="40">
+                        <DataGridTemplateColumn Header="" Width="50">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate x:DataType="vm:ImageItemViewModel">
                                     <TextBlock Text="{Binding StatusIcon}"
-                                               FontSize="16"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
+                                               Classes="status-icon"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -154,21 +192,22 @@
                                             Binding="{Binding FileName}"/>
 
                         <!-- Original Size Column -->
-                        <DataGridTextColumn Header="Old Size" 
+                        <DataGridTextColumn Header="Original" 
                                             Width="100"
                                             Binding="{Binding OriginalSize, Converter={StaticResource FileSizeConverter}}"/>
 
                         <!-- Compressed Size Column -->
-                        <DataGridTextColumn Header="New Size" 
+                        <DataGridTextColumn Header="Compressed" 
                                             Width="100"
                                             Binding="{Binding CompressedSize, Converter={StaticResource FileSizeConverter}}"/>
 
-                        <!-- Compression Ratio Column -->
-                        <DataGridTemplateColumn Header="Compressed" Width="120">
+                        <!-- Savings Column -->
+                        <DataGridTemplateColumn Header="Savings" Width="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate x:DataType="vm:ImageItemViewModel">
                                     <TextBlock VerticalAlignment="Center"
                                                HorizontalAlignment="Center"
+                                               FontWeight="SemiBold"
                                                Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource CompressionRatioConverter}">
@@ -184,5 +223,5 @@
                 </DataGrid>
             </Grid>
         </Border>
-    </DockPanel>
+    </Grid>
 </Window>

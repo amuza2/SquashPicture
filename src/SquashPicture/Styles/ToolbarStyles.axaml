@@ -1,0 +1,25 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Toolbar Container Style -->
+    <Style Selector="Border.toolbar">
+        <Setter Property="Background" Value="{DynamicResource BackgroundMediumBrush}"/>
+        <Setter Property="Padding" Value="16,12"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderDefaultBrush}"/>
+    </Style>
+    
+    <!-- Toolbar Button Group -->
+    <Style Selector="StackPanel.button-group">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="8"/>
+    </Style>
+    
+    <!-- Separator Style -->
+    <Style Selector="Separator">
+        <Setter Property="Background" Value="{DynamicResource BorderDefaultBrush}"/>
+        <Setter Property="Height" Value="1"/>
+        <Setter Property="Margin" Value="0,8"/>
+    </Style>
+    
+</Styles>

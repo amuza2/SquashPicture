@@ -1,0 +1,114 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Modern DataGrid Style -->
+    <ControlTheme x:Key="ModernDataGrid" TargetType="DataGrid">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="RowBackground" Value="Transparent"/>
+        <Setter Property="GridLinesVisibility" Value="None"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </ControlTheme>
+    
+    <!-- DataGrid Column Header Style -->
+    <ControlTheme x:Key="ModernDataGridColumnHeader" TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderDefaultBrush}"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^:pointerover">
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        </Style>
+    </ControlTheme>
+    
+    <!-- DataGrid Row Style -->
+    <ControlTheme x:Key="ModernDataGridRow" TargetType="DataGridRow">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:Name="RowBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="0"
+                        CornerRadius="6"
+                        Margin="4,1">
+                    <DataGridFrozenGrid Name="PART_Root"
+                                        ColumnDefinitions="Auto,*"
+                                        RowDefinitions="*,Auto,Auto">
+                        <Rectangle Name="BackgroundRectangle"
+                                   Grid.RowSpan="2"
+                                   Grid.ColumnSpan="2"/>
+                        <DataGridRowHeader Name="PART_RowHeader"
+                                           Grid.RowSpan="3"
+                                           DataGridFrozenGrid.IsFrozen="True"/>
+                        <DataGridCellsPresenter Name="PART_CellsPresenter"
+                                                Grid.Column="1"
+                                                DataGridFrozenGrid.IsFrozen="True"/>
+                        <DataGridDetailsPresenter Name="PART_DetailsPresenter"
+                                                  Grid.Row="1"
+                                                  Grid.Column="1"
+                                                  Background="{StaticResource SurfaceBrush}"/>
+                        <Rectangle Name="PART_BottomGridLine"
+                                   Grid.Row="2"
+                                   Grid.Column="1"
+                                   Height="1"
+                                   HorizontalAlignment="Stretch"/>
+                    </DataGridFrozenGrid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^:pointerover /template/ Border#RowBorder">
+            <Setter Property="Background" Value="{StaticResource SurfaceHoverBrush}"/>
+        </Style>
+        
+        <Style Selector="^:selected /template/ Border#RowBorder">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+        </Style>
+    </ControlTheme>
+    
+    <!-- DataGrid Cell Style -->
+    <ControlTheme x:Key="ModernDataGridCell" TargetType="DataGridCell">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        Padding="{TemplateBinding Padding}">
+                    <ContentPresenter Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      VerticalAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^:focus">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+    </ControlTheme>
+    
+</ResourceDictionary>
