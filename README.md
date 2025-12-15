@@ -9,8 +9,7 @@
 
 A lightweight, cross-platform image compression tool built with Avalonia UI. SquashPicture optimizes PNG and JPEG images using lossless compression techniques while preserving image quality.
 
-
-
+<img width="70%" height="70%" alt="image" src="https://github.com/user-attachments/assets/3f521267-d428-4601-901c-35ac3edc82b5" />
 </div>
 
 ## Features
@@ -141,3 +140,7 @@ Contributions are welcome!
 ## Acknowledgments
 
 - Icon by [Icons8](https://icons8.com/)
+
+<div align="center">
+Made with ❤️ for the Linux community
+</div>
