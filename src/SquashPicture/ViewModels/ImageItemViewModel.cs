@@ -21,10 +21,20 @@ public partial class ImageItemViewModel : ViewModelBase
     private long _compressedSize;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StatusIcon))]
     private CompressionStatus _status = CompressionStatus.Queued;
 
     [ObservableProperty]
     private string? _errorMessage;
+
+    public string StatusIcon => Status switch
+    {
+        CompressionStatus.Queued => "📋",
+        CompressionStatus.Compressing => "⏳",
+        CompressionStatus.Completed => "✓",
+        CompressionStatus.Error => "❌",
+        _ => ""
+    };
 
     [ObservableProperty]
     private bool _isRecompression;

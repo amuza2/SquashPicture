@@ -1,4 +1,6 @@
+using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +13,11 @@ namespace SquashPicture;
 
 public partial class App : Application
 {
+    private MainWindow? _mainWindow;
+    private MainWindowViewModel? _viewModel;
+    private NativeMenuItem? _toggleMenuItem;
+    private const string AppIcon = "icons8-image-100.png";
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -20,19 +27,142 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var mainWindow = new MainWindow();
+            _mainWindow = new MainWindow();
             
             var services = new ServiceCollection();
-            ConfigureServices(services, mainWindow);
+            ConfigureServices(services, _mainWindow);
             var serviceProvider = services.BuildServiceProvider();
             
-            var viewModel = serviceProvider.GetRequiredService<MainWindowViewModel>();
-            mainWindow.DataContext = viewModel;
+            _viewModel = serviceProvider.GetRequiredService<MainWindowViewModel>();
+            _mainWindow.DataContext = _viewModel;
             
-            desktop.MainWindow = mainWindow;
+            desktop.MainWindow = _mainWindow;
+            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            
+            _mainWindow.Closing += OnMainWindowClosing;
+            
+            CreateTrayIcon();
+            UpdateToggleMenuText();
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private void OnMainWindowClosing(object? sender, WindowClosingEventArgs e)
+    {
+        e.Cancel = true;
+        _mainWindow?.Hide();
+        UpdateToggleMenuText();
+    }
+
+    private void CreateTrayIcon()
+    {
+        try
+        {
+            var statusMenuItem = new NativeMenuItem
+            {
+                Header = "SquashPicture",
+                IsEnabled = false
+            };
+
+            var addMenuItem = new NativeMenuItem { Header = "Add and compress" };
+            addMenuItem.Click += (_, _) => _viewModel?.AddFilesCommand.Execute(null);
+
+            var recompressMenuItem = new NativeMenuItem { Header = "Recompress" };
+            recompressMenuItem.Click += (_, _) => _viewModel?.RecompressCommand.Execute(null);
+
+            _toggleMenuItem = new NativeMenuItem { Header = GetToggleMenuText() };
+            _toggleMenuItem.Click += (_, _) =>
+            {
+                ToggleWindowVisibility();
+                UpdateToggleMenuText();
+            };
+
+            var quitMenuItem = new NativeMenuItem { Header = "Quit" };
+            quitMenuItem.Click += (_, _) => QuitApplication();
+
+            var menu = new NativeMenu();
+            menu.Add(statusMenuItem);
+            menu.Add(new NativeMenuItemSeparator());
+            menu.Add(addMenuItem);
+            menu.Add(recompressMenuItem);
+            menu.Add(new NativeMenuItemSeparator());
+            menu.Add(_toggleMenuItem);
+            menu.Add(new NativeMenuItemSeparator());
+            menu.Add(quitMenuItem);
+
+            var trayIcon = new TrayIcon
+            {
+                Icon = LoadWindowIcon($"/Assets/{AppIcon}"),
+                ToolTipText = "SquashPicture",
+                Menu = menu
+            };
+
+            trayIcon.Clicked += (_, _) =>
+            {
+                ToggleWindowVisibility();
+                UpdateToggleMenuText();
+            };
+
+            var trayIcons = new TrayIcons { trayIcon };
+            TrayIcon.SetIcons(this, trayIcons);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating tray icon: {ex.Message}");
+        }
+    }
+
+    private string GetToggleMenuText()
+    {
+        return (_mainWindow?.IsVisible == true) ? "Hide" : "Show";
+    }
+
+    private void UpdateToggleMenuText()
+    {
+        if (_toggleMenuItem != null)
+        {
+            _toggleMenuItem.Header = GetToggleMenuText();
+        }
+    }
+
+    private void ToggleWindowVisibility()
+    {
+        if (_mainWindow is null) return;
+
+        if (_mainWindow.IsVisible)
+        {
+            _mainWindow.Hide();
+        }
+        else
+        {
+            _mainWindow.Show();
+            _mainWindow.WindowState = WindowState.Normal;
+            _mainWindow.Activate();
+        }
+    }
+
+    private void QuitApplication()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.Shutdown();
+        }
+    }
+
+    private WindowIcon? LoadWindowIcon(string path)
+    {
+        try
+        {
+            var uri = new Uri($"avares://SquashPicture{path}");
+            using var stream = Avalonia.Platform.AssetLoader.Open(uri);
+            return new WindowIcon(stream);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading window icon: {ex.Message}");
+            return null;
+        }
     }
 
     private static void ConfigureServices(IServiceCollection services, MainWindow mainWindow)

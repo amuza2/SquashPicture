@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AvaloniaResource Include="Assets\**"/>
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- Core Avalonia -->
     <PackageReference Include="Avalonia" Version="11.3.9" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.9" />

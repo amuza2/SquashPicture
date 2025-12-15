@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using System.Windows.Input;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using SquashPicture.ViewModels;
 
@@ -10,11 +12,26 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        SetupQuitShortcut();
     }
 
     public MainWindow(MainWindowViewModel viewModel) : this()
     {
         DataContext = viewModel;
+    }
+
+    private void SetupQuitShortcut()
+    {
+        foreach (var binding in KeyBindings)
+        {
+            if (binding.Gesture is KeyGesture gesture && 
+                gesture.Key == Key.Q && 
+                gesture.KeyModifiers == KeyModifiers.Control)
+            {
+                binding.Command = new QuitCommand(this);
+                break;
+            }
+        }
     }
 
     private void OnGitHubLinkClick(object? sender, RoutedEventArgs e)
@@ -27,5 +44,19 @@ public partial class MainWindow : Window
                 UseShellExecute = true
             });
         }
+    }
+
+    private class QuitCommand : ICommand
+    {
+        private readonly Window _window;
+
+        public QuitCommand(Window window)
+        {
+            _window = window;
+        }
+
+        public event EventHandler? CanExecuteChanged;
+        public bool CanExecute(object? parameter) => true;
+        public void Execute(object? parameter) => _window.Close();
     }
 }
