@@ -19,6 +19,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(RecompressCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ClearCommand))]
     private bool _hasFiles;
 
     [ObservableProperty]
@@ -34,6 +35,8 @@ public partial class MainWindowViewModel : ViewModelBase
     private static readonly string OutputFolder = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
         "SquashPicture_Output");
+
+    public string OutputFolderPath => OutputFolder;
 
     public MainWindowViewModel(IFileDialogService fileDialogService, ICompressionService compressionService)
     {
@@ -72,6 +75,12 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     private bool CanRecompress() => HasFiles && !IsCompressing;
+
+    [RelayCommand(CanExecute = nameof(HasFiles))]
+    private void Clear()
+    {
+        Images.Clear();
+    }
 
     public void AddFiles(IEnumerable<string> paths)
     {

@@ -21,6 +21,7 @@
     <Window.KeyBindings>
         <KeyBinding Gesture="Alt+A" Command="{Binding AddFilesCommand}"/>
         <KeyBinding Gesture="Alt+R" Command="{Binding RecompressCommand}"/>
+        <KeyBinding Gesture="Alt+C" Command="{Binding ClearCommand}"/>
     </Window.KeyBindings>
 
     <DockPanel>
@@ -30,7 +31,7 @@
                 Padding="10">
             <StackPanel Spacing="8">
                 <!-- Top row: Buttons -->
-                <Grid ColumnDefinitions="Auto,*,Auto">
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                     <!-- Add Files Button -->
                     <Button Grid.Column="0"
                             Command="{Binding AddFilesCommand}"
@@ -41,12 +42,20 @@
                         </StackPanel>
                     </Button>
 
-                    <!-- Checkbox in center -->
-                    <CheckBox Grid.Column="1"
-                              Content="Replace original files"
-                              IsChecked="{Binding ReplaceOriginalFiles}"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                    <!-- Checkbox and Clear button in center -->
+                    <StackPanel Grid.Column="1" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Center"
+                                Spacing="16">
+                        <CheckBox Content="Replace original files"
+                                  IsChecked="{Binding ReplaceOriginalFiles}"
+                                  VerticalAlignment="Center"/>
+                        <Button Command="{Binding ClearCommand}"
+                                Padding="10,6"
+                                VerticalAlignment="Center">
+                            <TextBlock Text="Clear"/>
+                        </Button>
+                    </StackPanel>
 
                     <!-- Recompress Button -->
                     <Button Grid.Column="2"
@@ -57,6 +66,47 @@
                             <TextBlock Text="Recompress" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
+
+                    <!-- Info Button -->
+                    <Button Grid.Column="3"
+                            Margin="8,0,0,0"
+                            Padding="8"
+                            Height="40"
+                            ToolTip.Tip="About SquashPicture">
+                        <Button.Flyout>
+                            <Flyout Placement="BottomEdgeAlignedRight">
+                                <StackPanel Spacing="8" MinWidth="150">
+                                    <TextBlock Text="SquashPicture" FontWeight="Bold" FontSize="16"/>
+                                    <TextBlock Text="Version 1.0.0" Opacity="0.7"/>
+                                    <Separator/>
+                                    <TextBlock Text="Keyboard Shortcuts" FontWeight="SemiBold"/>
+                                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" Margin="0,4,0,0">
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Alt+A" FontFamily="Consolas" Opacity="0.8"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Add files" Margin="12,0,0,0"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Alt+R" FontFamily="Consolas" Opacity="0.8"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Recompress" Margin="12,0,0,0"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Alt+C" FontFamily="Consolas" Opacity="0.8"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="Clear" Margin="12,0,0,0"/>
+                                    </Grid>
+                                    <Separator/>
+                                    <TextBlock Text="Output Path" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding OutputFolderPath}" 
+                                               TextWrapping="Wrap" 
+                                               Opacity="0.8"
+                                               FontSize="11"/>
+                                    <Separator/>
+                                    <Button Classes="hyperlink" 
+                                            Content="github"
+                                            Tag="https://github.com/amuza2/SquashPicture"
+                                            Click="OnGitHubLinkClick"
+                                            Padding="0"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent"/>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                        <TextBlock Text="🛈︎" FontSize="16"/>
+                    </Button>
                 </Grid>
             </StackPanel>
         </Border>
@@ -66,7 +116,7 @@
                 Background="Transparent">
             <Grid>
                 <!-- Placeholder text - shown when no files -->
-                <TextBlock Text="Click 'Add and compress' to select images"
+                <TextBlock Text="Click 'Add' to select images"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Opacity="0.5"
