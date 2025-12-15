@@ -1,6 +1,9 @@
 software_specification.md
 todo.md
 
+# Publish output
+publish/
+
 # Build results
 [Dd]ebug/
 [Rr]elease/
@@ -40,7 +43,6 @@ artifacts/
 
 # Publish output
 [Pp]ublish/
-publish/
 
 # .NET Core
 *.deps.json

@@ -113,9 +113,8 @@ public partial class App : Application
             var trayIcons = new TrayIcons { trayIcon };
             TrayIcon.SetIcons(this, trayIcons);
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Error creating tray icon: {ex.Message}");
         }
     }
 
@@ -203,9 +202,8 @@ public partial class App : Application
             using var stream = Avalonia.Platform.AssetLoader.Open(uri);
             return new WindowIcon(stream);
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Error loading window icon: {ex.Message}");
             return null;
         }
     }

@@ -36,9 +36,8 @@ public class SettingsService : ISettingsService
             var json = File.ReadAllText(SettingsFilePath);
             Settings = JsonSerializer.Deserialize<AppSettings>(json, JsonOptions) ?? new AppSettings();
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Error loading settings: {ex.Message}");
             Settings = new AppSettings();
         }
     }
@@ -55,9 +54,8 @@ public class SettingsService : ISettingsService
             var json = JsonSerializer.Serialize(Settings, JsonOptions);
             File.WriteAllText(SettingsFilePath, json);
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Error saving settings: {ex.Message}");
         }
     }
 }
