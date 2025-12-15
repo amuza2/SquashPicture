@@ -28,27 +28,28 @@ public class JpegCompressor : IImageCompressor
                     $"{Guid.NewGuid()}_{Path.GetFileName(inputPath)}");
                 File.Copy(inputPath, backupPath, overwrite: true);
             }
+            else
+            {
+                File.Copy(inputPath, targetPath, overwrite: true);
+            }
 
             await Task.Run(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                using var image = new MagickImage(inputPath);
-
+                using var image = new MagickImage(targetPath);
                 image.Strip();
-
-                image.Settings.Interlace = Interlace.Plane;
-
-                var originalQuality = image.Quality;
-                image.Quality = originalQuality;
-
+                image.Settings.SetDefine(MagickFormat.Jpeg, "sampling-factor", "4:2:0");
+                image.Settings.Interlace = Interlace.Jpeg;
+                image.Quality = 80;
                 image.Write(targetPath);
 
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var optimizer = new ImageOptimizer
                 {
-                    OptimalCompression = true
+                    OptimalCompression = true,
+                    IgnoreUnsupportedFormats = true
                 };
                 optimizer.LosslessCompress(targetPath);
 

@@ -1,7 +1,5 @@
 using System.Diagnostics;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Processing;
+using ImageMagick;
 using SquashPicture.Models;
 
 namespace SquashPicture.Compressors;
@@ -30,22 +28,43 @@ public class PngCompressor : IImageCompressor
                     $"{Guid.NewGuid()}_{Path.GetFileName(inputPath)}");
                 File.Copy(inputPath, backupPath, overwrite: true);
             }
-
-            using var image = await Image.LoadAsync(inputPath, cancellationToken);
-
-            image.Metadata.ExifProfile = null;
-            image.Metadata.IccProfile = null;
-            image.Metadata.IptcProfile = null;
-            image.Metadata.XmpProfile = null;
-
-            var encoder = new PngEncoder
+            else
             {
-                CompressionLevel = PngCompressionLevel.BestCompression,
-                FilterMethod = PngFilterMethod.Adaptive,
-                SkipMetadata = true
-            };
+                File.Copy(inputPath, targetPath, overwrite: true);
+            }
 
-            await image.SaveAsPngAsync(targetPath, encoder, cancellationToken);
+            await Task.Run(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                using var image = new MagickImage(targetPath);
+
+                image.Strip();
+
+                var quantize = new QuantizeSettings
+                {
+                    Colors = 256,
+                    DitherMethod = DitherMethod.FloydSteinberg,
+                    ColorSpace = ColorSpace.sRGB
+                };
+                image.Quantize(quantize);
+
+                image.Settings.SetDefine(MagickFormat.Png, "compression-filter", "5");
+                image.Settings.SetDefine(MagickFormat.Png, "compression-level", "9");
+                image.Settings.SetDefine(MagickFormat.Png, "compression-strategy", "1");
+                
+                image.Write(targetPath, MagickFormat.Png8);
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var optimizer = new ImageOptimizer
+                {
+                    OptimalCompression = true,
+                    IgnoreUnsupportedFormats = true
+                };
+                optimizer.LosslessCompress(targetPath);
+
+            }, cancellationToken);
 
             var compressedSize = new FileInfo(targetPath).Length;
 
