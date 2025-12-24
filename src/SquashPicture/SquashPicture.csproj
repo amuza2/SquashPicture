@@ -29,7 +29,7 @@
     <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.2.0" />
     
     <!-- DI & Logging -->
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
     
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
