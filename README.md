@@ -10,7 +10,8 @@
 
 A lightweight image compression tool built with Avalonia UI. SquashPicture optimizes PNG and JPEG images using lossless compression techniques while preserving image quality.
 
-<img width="70%" height="70%" alt="image" src="https://github.com/user-attachments/assets/3f521267-d428-4601-901c-35ac3edc82b5" />
+<img width="817" height="608" alt="image" src="https://github.com/user-attachments/assets/8209c261-eda1-4778-a8e3-5a85ae172dc8" />
+
 </div>
 
 ## Features
