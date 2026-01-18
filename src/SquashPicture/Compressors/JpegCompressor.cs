@@ -57,9 +57,16 @@ public class JpegCompressor : IImageCompressor
 
             var compressedSize = new FileInfo(targetPath).Length;
 
-            if (replaceOriginal && compressedSize >= originalSize)
+            if (compressedSize >= originalSize)
             {
-                File.Copy(backupPath!, targetPath, overwrite: true);
+                if (replaceOriginal)
+                {
+                    File.Copy(backupPath!, targetPath, overwrite: true);
+                }
+                else
+                {
+                    File.Copy(inputPath, targetPath, overwrite: true);
+                }
                 compressedSize = originalSize;
             }
 
