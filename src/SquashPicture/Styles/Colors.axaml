@@ -1,49 +1,102 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
-    <!-- Base Colors -->
-    <Color x:Key="BackgroundDark">#1a1a2e</Color>
-    <Color x:Key="BackgroundMedium">#16213e</Color>
-    <Color x:Key="BackgroundLight">#1f2940</Color>
-    <Color x:Key="SurfaceColor">#252a41</Color>
-    <Color x:Key="SurfaceHover">#2d3454</Color>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NEUMORPHISM COLOR SYSTEM
+         Soft UI design with subtle shadows creating depth illusion
+         ═══════════════════════════════════════════════════════════════════════ -->
     
-    <!-- Accent Colors -->
-    <Color x:Key="AccentPrimary">#4f46e5</Color>
-    <Color x:Key="AccentPrimaryHover">#6366f1</Color>
-    <Color x:Key="AccentSecondary">#06b6d4</Color>
-    <Color x:Key="AccentSuccess">#10b981</Color>
-    <Color x:Key="AccentWarning">#f59e0b</Color>
-    <Color x:Key="AccentError">#ef4444</Color>
+    <!-- Base Neumorphism Colors (Dark Theme) -->
+    <Color x:Key="NeuroBackground">#2d2d3a</Color>
+    <Color x:Key="NeuroSurface">#2d2d3a</Color>
+    <Color x:Key="NeuroSurfaceLight">#353545</Color>
+    <Color x:Key="NeuroSurfaceDark">#252532</Color>
     
-    <!-- Text Colors -->
-    <Color x:Key="TextPrimary">#f8fafc</Color>
-    <Color x:Key="TextSecondary">#94a3b8</Color>
-    <Color x:Key="TextMuted">#64748b</Color>
+    <!-- Neumorphism Shadow Colors -->
+    <Color x:Key="NeuroShadowDark">#1a1a24</Color>
+    <Color x:Key="NeuroShadowLight">#40404f</Color>
+    <Color x:Key="NeuroHighlight">#3d3d4d</Color>
     
-    <!-- Border Colors -->
-    <Color x:Key="BorderDefault">#334155</Color>
-    <Color x:Key="BorderLight">#475569</Color>
+    <!-- Accent Colors (Softer for Neumorphism) -->
+    <Color x:Key="AccentPrimary">#6c63ff</Color>
+    <Color x:Key="AccentPrimaryHover">#7d75ff</Color>
+    <Color x:Key="AccentPrimaryMuted">#5a52e0</Color>
+    <Color x:Key="AccentSecondary">#4ecdc4</Color>
+    <Color x:Key="AccentSuccess">#45b7aa</Color>
+    <Color x:Key="AccentWarning">#f5a623</Color>
+    <Color x:Key="AccentError">#e74c3c</Color>
     
-    <!-- Brushes -->
+    <!-- Text Colors (Softer contrast for Neumorphism) -->
+    <Color x:Key="TextPrimary">#e8e8f0</Color>
+    <Color x:Key="TextSecondary">#a0a0b0</Color>
+    <Color x:Key="TextMuted">#707080</Color>
+    
+    <!-- Border Colors (Subtle for Neumorphism) -->
+    <Color x:Key="BorderDefault">#3a3a4a</Color>
+    <Color x:Key="BorderLight">#454555</Color>
+    
+    <!-- Legacy Aliases for Compatibility -->
+    <Color x:Key="BackgroundDark">#2d2d3a</Color>
+    <Color x:Key="BackgroundMedium">#323242</Color>
+    <Color x:Key="BackgroundLight">#383848</Color>
+    <Color x:Key="SurfaceColor">#2d2d3a</Color>
+    <Color x:Key="SurfaceHover">#353545</Color>
+    
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         SOLID COLOR BRUSHES
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
+    <!-- Neumorphism Base Brushes -->
+    <SolidColorBrush x:Key="NeuroBackgroundBrush" Color="{StaticResource NeuroBackground}"/>
+    <SolidColorBrush x:Key="NeuroSurfaceBrush" Color="{StaticResource NeuroSurface}"/>
+    <SolidColorBrush x:Key="NeuroSurfaceLightBrush" Color="{StaticResource NeuroSurfaceLight}"/>
+    <SolidColorBrush x:Key="NeuroSurfaceDarkBrush" Color="{StaticResource NeuroSurfaceDark}"/>
+    <SolidColorBrush x:Key="NeuroHighlightBrush" Color="{StaticResource NeuroHighlight}"/>
+    
+    <!-- Legacy Background Brushes -->
     <SolidColorBrush x:Key="BackgroundDarkBrush" Color="{StaticResource BackgroundDark}"/>
     <SolidColorBrush x:Key="BackgroundMediumBrush" Color="{StaticResource BackgroundMedium}"/>
     <SolidColorBrush x:Key="BackgroundLightBrush" Color="{StaticResource BackgroundLight}"/>
     <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}"/>
     <SolidColorBrush x:Key="SurfaceHoverBrush" Color="{StaticResource SurfaceHover}"/>
     
+    <!-- Accent Brushes -->
     <SolidColorBrush x:Key="AccentPrimaryBrush" Color="{StaticResource AccentPrimary}"/>
     <SolidColorBrush x:Key="AccentPrimaryHoverBrush" Color="{StaticResource AccentPrimaryHover}"/>
+    <SolidColorBrush x:Key="AccentPrimaryMutedBrush" Color="{StaticResource AccentPrimaryMuted}"/>
     <SolidColorBrush x:Key="AccentSecondaryBrush" Color="{StaticResource AccentSecondary}"/>
     <SolidColorBrush x:Key="AccentSuccessBrush" Color="{StaticResource AccentSuccess}"/>
     <SolidColorBrush x:Key="AccentWarningBrush" Color="{StaticResource AccentWarning}"/>
     <SolidColorBrush x:Key="AccentErrorBrush" Color="{StaticResource AccentError}"/>
     
+    <!-- Text Brushes -->
     <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
     <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
     <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMuted}"/>
     
+    <!-- Border Brushes -->
     <SolidColorBrush x:Key="BorderDefaultBrush" Color="{StaticResource BorderDefault}"/>
     <SolidColorBrush x:Key="BorderLightBrush" Color="{StaticResource BorderLight}"/>
+    
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NEUMORPHISM BOX SHADOWS (as string resources for use in BoxShadow property)
+         Format: "offsetX offsetY blur spread color"
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
+    <!-- Convex (Raised) Neumorphism Shadows -->
+    <x:String x:Key="NeuroShadowConvex">6 6 12 0 #1a1a24, -6 -6 12 0 #40404f</x:String>
+    <x:String x:Key="NeuroShadowConvexSmall">3 3 6 0 #1a1a24, -3 -3 6 0 #40404f</x:String>
+    <x:String x:Key="NeuroShadowConvexLarge">8 8 16 0 #1a1a24, -8 -8 16 0 #40404f</x:String>
+    
+    <!-- Concave (Pressed) Neumorphism Shadows -->
+    <x:String x:Key="NeuroShadowConcave">inset 4 4 8 0 #1a1a24, inset -4 -4 8 0 #40404f</x:String>
+    <x:String x:Key="NeuroShadowConcaveSmall">inset 2 2 4 0 #1a1a24, inset -2 -2 4 0 #40404f</x:String>
+    
+    <!-- Flat (No shadow, subtle border) -->
+    <x:String x:Key="NeuroShadowFlat">0 0 0 1 #3a3a4a</x:String>
+    
+    <!-- Accent Glow Shadows -->
+    <x:String x:Key="NeuroShadowAccent">0 4 15 0 #406c63ff</x:String>
+    <x:String x:Key="NeuroShadowAccentHover">0 6 20 0 #506c63ff</x:String>
     
 </ResourceDictionary>

@@ -1,21 +1,24 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
-    <!-- Modern Flyout Presenter Style -->
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NEUMORPHISM FLYOUT STYLES
+         Soft floating panel with depth shadows
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
+    <!-- Neumorphism Flyout Presenter Style -->
     <ControlTheme x:Key="ModernFlyoutPresenter" TargetType="FlyoutPresenter">
-        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource BorderDefaultBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Padding" Value="16"/>
+        <Setter Property="Background" Value="{DynamicResource NeuroSurfaceBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="20"/>
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding CornerRadius}"
                         Padding="{TemplateBinding Padding}"
-                        BoxShadow="0 8 32 0 #40000000">
+                        BoxShadow="8 8 20 0 #1a1a24, -8 -8 20 0 #40404f, 0 10 30 0 #30000000">
                     <ContentPresenter Content="{TemplateBinding Content}"
                                       ContentTemplate="{TemplateBinding ContentTemplate}"/>
                 </Border>

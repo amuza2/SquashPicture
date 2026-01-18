@@ -1,11 +1,17 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NEUMORPHISM TEXT STYLES
+         Soft, readable typography with subtle color hierarchy
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
     <!-- Heading Styles -->
     <Style Selector="TextBlock.h1">
-        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontSize" Value="26"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="LetterSpacing" Value="0.5"/>
     </Style>
     
     <Style Selector="TextBlock.h2">
@@ -24,11 +30,13 @@
     <Style Selector="TextBlock.body">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="LineHeight" Value="22"/>
     </Style>
     
     <Style Selector="TextBlock.body-secondary">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+        <Setter Property="LineHeight" Value="22"/>
     </Style>
     
     <Style Selector="TextBlock.caption">
@@ -41,13 +49,14 @@
         <Setter Property="FontSize" Value="11"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+        <Setter Property="LetterSpacing" Value="1"/>
     </Style>
     
     <!-- Monospace Style -->
     <Style Selector="TextBlock.mono">
         <Setter Property="FontFamily" Value="Consolas, Monaco, monospace"/>
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource AccentSecondaryBrush}"/>
     </Style>
     
     <!-- Status Icon Style -->
@@ -63,6 +72,13 @@
         <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    
+    <!-- Accent Text Style -->
+    <Style Selector="TextBlock.accent">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{DynamicResource AccentPrimaryBrush}"/>
     </Style>
     
 </Styles>

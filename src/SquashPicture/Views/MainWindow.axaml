@@ -4,14 +4,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:SquashPicture.ViewModels"
         xmlns:converters="using:SquashPicture.Converters"
-        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="500"
+        mc:Ignorable="d" d:DesignWidth="750" d:DesignHeight="550"
         x:Class="SquashPicture.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/icons8-image-100.png"
         Title="{Binding WindowTitle}"
-        Width="700" Height="500"
-        MinWidth="600" MinHeight="400"
-        Background="{DynamicResource BackgroundDarkBrush}">
+        Width="750" Height="550"
+        MinWidth="650" MinHeight="450"
+        Background="{DynamicResource NeuroBackgroundBrush}">
 
     <Window.Resources>
         <converters:FileSizeConverter x:Key="FileSizeConverter"/>
@@ -28,22 +28,18 @@
 
     <Grid RowDefinitions="Auto,*">
         
-        <!-- Modern Toolbar -->
+        <!-- Neumorphism Toolbar -->
         <Border Grid.Row="0" 
-                Classes="toolbar"
-                Background="{DynamicResource BackgroundMediumBrush}"
-                Padding="16,12"
-                BorderThickness="0,0,0,1"
-                BorderBrush="{DynamicResource BorderDefaultBrush}">
+                Classes="toolbar">
             <Grid ColumnDefinitions="Auto,*,Auto">
                 
                 <!-- Left: Primary Actions -->
                 <StackPanel Grid.Column="0" 
                             Orientation="Horizontal" 
-                            Spacing="12">
+                            Spacing="16">
                     <Button Theme="{StaticResource PrimaryButton}"
                             Command="{Binding AddFilesCommand}">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
                             <TextBlock Text="+" FontSize="18" FontWeight="Bold" Margin="0,-2,0,0"/>
                             <TextBlock Text="Add Images" VerticalAlignment="Center"/>
                         </StackPanel>
@@ -51,7 +47,7 @@
                     
                     <Button Theme="{StaticResource SecondaryButton}"
                             Command="{Binding RecompressCommand}">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
                             <TextBlock Text="↻" FontSize="16"/>
                             <TextBlock Text="Recompress" VerticalAlignment="Center"/>
                         </StackPanel>
@@ -71,10 +67,10 @@
                 <!-- Right: Secondary Actions -->
                 <StackPanel Grid.Column="2" 
                             Orientation="Horizontal" 
-                            Spacing="8">
+                            Spacing="12">
                     <Button Theme="{StaticResource SecondaryButton}"
                             Command="{Binding ClearCommand}"
-                            Padding="12,10">
+                            Padding="16,12">
                         <TextBlock Text="Clear"/>
                     </Button>
                     
@@ -84,9 +80,9 @@
                         <Button.Flyout>
                             <Flyout Placement="BottomEdgeAlignedRight"
                                     FlyoutPresenterTheme="{StaticResource ModernFlyoutPresenter}">
-                                <StackPanel Spacing="12" MinWidth="220">
+                                <StackPanel Spacing="16" MinWidth="240">
                                     <!-- App Header -->
-                                    <StackPanel Spacing="4">
+                                    <StackPanel Spacing="6">
                                         <TextBlock Text="SquashPicture" Classes="h2"/>
                                         <TextBlock Text="Version 1.0.0" Classes="caption"/>
                                     </StackPanel>
@@ -94,7 +90,7 @@
                                     <Separator/>
                                     
                                     <!-- Keyboard Shortcuts -->
-                                    <StackPanel Spacing="8">
+                                    <StackPanel Spacing="10">
                                         <TextBlock Text="KEYBOARD SHORTCUTS" Classes="label"/>
                                         <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,4,0,0">
                                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Alt+A" Classes="mono"/>
@@ -111,12 +107,12 @@
                                     <Separator/>
                                     
                                     <!-- Output Path -->
-                                    <StackPanel Spacing="4">
+                                    <StackPanel Spacing="6">
                                         <TextBlock Text="OUTPUT PATH" Classes="label"/>
                                         <TextBlock Text="{Binding OutputFolderPath}" 
                                                    TextWrapping="Wrap" 
                                                    Classes="caption"
-                                                   MaxWidth="200"/>
+                                                   MaxWidth="220"/>
                                     </StackPanel>
                                     
                                     <Separator/>
@@ -136,23 +132,29 @@
             </Grid>
         </Border>
 
-        <!-- Main Content Area -->
+        <!-- Neumorphism Main Content Area -->
         <Border Grid.Row="1" 
-                Margin="16"
-                Background="{DynamicResource BackgroundLightBrush}"
-                CornerRadius="12"
-                BorderBrush="{DynamicResource BorderDefaultBrush}"
-                BorderThickness="1">
-            <Grid>
+                Margin="20"
+                Background="{DynamicResource NeuroSurfaceBrush}"
+                CornerRadius="20"
+                BorderThickness="0"
+                BoxShadow="inset 4 4 10 0 #1a1a24, inset -4 -4 10 0 #40404f">
+            <Grid Margin="8">
                 <!-- Placeholder - shown when no files -->
                 <StackPanel HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Spacing="16"
+                            Spacing="20"
                             IsVisible="{Binding !HasFiles}">
-                    <TextBlock Text="🖼️" 
-                               FontSize="48" 
-                               HorizontalAlignment="Center"
-                               Opacity="0.5"/>
+                    <Border Background="{DynamicResource NeuroSurfaceBrush}"
+                            CornerRadius="30"
+                            Padding="24"
+                            BoxShadow="6 6 12 0 #1a1a24, -6 -6 12 0 #40404f"
+                            HorizontalAlignment="Center">
+                        <TextBlock Text="🖼️" 
+                                   FontSize="48" 
+                                   HorizontalAlignment="Center"
+                                   Opacity="0.7"/>
+                    </Border>
                     <TextBlock Text="No images added yet" 
                                Classes="placeholder"
                                FontSize="18"/>

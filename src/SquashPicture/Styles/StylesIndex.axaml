@@ -1,8 +1,16 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NEUMORPHISM STYLES INDEX
+         Central hub for all Neumorphism design system styles
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
     <ResourceDictionary.MergedDictionaries>
+        <!-- Core Design Tokens -->
         <ResourceInclude Source="avares://SquashPicture/Styles/Colors.axaml"/>
+        
+        <!-- Component Styles -->
         <ResourceInclude Source="avares://SquashPicture/Styles/ButtonStyles.axaml"/>
         <ResourceInclude Source="avares://SquashPicture/Styles/CheckBoxStyles.axaml"/>
         <ResourceInclude Source="avares://SquashPicture/Styles/DataGridStyles.axaml"/>

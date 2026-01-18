@@ -1,23 +1,28 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
-    <!-- Modern CheckBox Style -->
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NEUMORPHISM CHECKBOX STYLES
+         Soft toggle with inset/outset shadow states
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
+    <!-- Neumorphism CheckBox Style -->
     <ControlTheme x:Key="ModernCheckBox" TargetType="CheckBox">
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Padding" Value="8,0,0,0"/>
+        <Setter Property="Padding" Value="12,0,0,0"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="Transparent" Padding="{TemplateBinding Padding}">
                     <Grid ColumnDefinitions="Auto,*">
                         <Border x:Name="CheckBorder"
-                                Width="20"
-                                Height="20"
-                                CornerRadius="4"
-                                Background="{StaticResource SurfaceBrush}"
-                                BorderBrush="{StaticResource BorderDefaultBrush}"
-                                BorderThickness="1">
+                                Width="24"
+                                Height="24"
+                                CornerRadius="8"
+                                Background="{StaticResource NeuroSurfaceBrush}"
+                                BorderThickness="0"
+                                BoxShadow="inset 2 2 5 0 #1a1a24, inset -2 -2 5 0 #40404f">
                             <Panel>
                                 <Path x:Name="CheckMark"
                                       Width="12"
@@ -26,8 +31,8 @@
                                       HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
                                       Data="M 1.5 5 L 4.5 8 L 10.5 2"
-                                      Stroke="{StaticResource TextPrimaryBrush}"
-                                      StrokeThickness="2"
+                                      Stroke="{StaticResource AccentPrimaryBrush}"
+                                      StrokeThickness="2.5"
                                       StrokeLineCap="Round"
                                       IsVisible="False"/>
                             </Panel>
@@ -43,8 +48,7 @@
         </Setter>
         
         <Style Selector="^:checked /template/ Border#CheckBorder">
-            <Setter Property="Background" Value="{StaticResource AccentPrimaryBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource AccentPrimaryBrush}"/>
+            <Setter Property="BoxShadow" Value="3 3 6 0 #1a1a24, -3 -3 6 0 #40404f"/>
         </Style>
         
         <Style Selector="^:checked /template/ Path#CheckMark">
@@ -52,7 +56,7 @@
         </Style>
         
         <Style Selector="^:pointerover /template/ Border#CheckBorder">
-            <Setter Property="BorderBrush" Value="{StaticResource AccentPrimaryBrush}"/>
+            <Setter Property="Background" Value="{StaticResource NeuroSurfaceLightBrush}"/>
         </Style>
         
         <Style Selector="^:disabled">

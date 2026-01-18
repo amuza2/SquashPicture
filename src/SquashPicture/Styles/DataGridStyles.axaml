@@ -1,7 +1,12 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
-    <!-- Modern DataGrid Style -->
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NEUMORPHISM DATAGRID STYLES
+         Soft, card-like rows with subtle depth
+         ═══════════════════════════════════════════════════════════════════════ -->
+    
+    <!-- Neumorphism DataGrid Style -->
     <ControlTheme x:Key="ModernDataGrid" TargetType="DataGrid">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
@@ -13,20 +18,17 @@
         <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
     </ControlTheme>
     
-    <!-- DataGrid Column Header Style -->
+    <!-- Neumorphism DataGrid Column Header Style -->
     <ControlTheme x:Key="ModernDataGridColumnHeader" TargetType="DataGridColumnHeader">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Padding" Value="12,10"/>
-        <Setter Property="BorderThickness" Value="0,0,0,1"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BorderDefaultBrush}"/>
+        <Setter Property="Padding" Value="16,12"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
                         Padding="{TemplateBinding Padding}">
                     <Grid ColumnDefinitions="*,Auto">
                         <ContentPresenter Content="{TemplateBinding Content}"
@@ -43,9 +45,9 @@
         </Style>
     </ControlTheme>
     
-    <!-- DataGrid Row Style -->
+    <!-- Neumorphism DataGrid Row Style -->
     <ControlTheme x:Key="ModernDataGridRow" TargetType="DataGridRow">
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="{StaticResource NeuroSurfaceBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="Template">
@@ -53,8 +55,9 @@
                 <Border x:Name="RowBorder"
                         Background="{TemplateBinding Background}"
                         BorderThickness="0"
-                        CornerRadius="6"
-                        Margin="4,1">
+                        CornerRadius="12"
+                        Margin="4,3"
+                        BoxShadow="3 3 6 0 #1a1a24, -3 -3 6 0 #40404f">
                     <DataGridFrozenGrid Name="PART_Root"
                                         ColumnDefinitions="Auto,*"
                                         RowDefinitions="*,Auto,Auto">
@@ -70,11 +73,11 @@
                         <DataGridDetailsPresenter Name="PART_DetailsPresenter"
                                                   Grid.Row="1"
                                                   Grid.Column="1"
-                                                  Background="{StaticResource SurfaceBrush}"/>
+                                                  Background="{StaticResource NeuroSurfaceBrush}"/>
                         <Rectangle Name="PART_BottomGridLine"
                                    Grid.Row="2"
                                    Grid.Column="1"
-                                   Height="1"
+                                   Height="0"
                                    HorizontalAlignment="Stretch"/>
                     </DataGridFrozenGrid>
                 </Border>
@@ -82,19 +85,20 @@
         </Setter>
         
         <Style Selector="^:pointerover /template/ Border#RowBorder">
-            <Setter Property="Background" Value="{StaticResource SurfaceHoverBrush}"/>
+            <Setter Property="Background" Value="{StaticResource NeuroSurfaceLightBrush}"/>
+            <Setter Property="BoxShadow" Value="4 4 8 0 #1a1a24, -4 -4 8 0 #40404f"/>
         </Style>
         
         <Style Selector="^:selected /template/ Border#RowBorder">
-            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+            <Setter Property="BoxShadow" Value="inset 2 2 4 0 #1a1a24, inset -2 -2 4 0 #40404f"/>
         </Style>
     </ControlTheme>
     
-    <!-- DataGrid Cell Style -->
+    <!-- Neumorphism DataGrid Cell Style -->
     <ControlTheme x:Key="ModernDataGridCell" TargetType="DataGridCell">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
-        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="Padding" Value="16,10"/>
         <Setter Property="Template">
             <ControlTemplate>
                 <Border Background="{TemplateBinding Background}"
