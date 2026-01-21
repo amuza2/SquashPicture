@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    
+    steps:
+    - name: Get version from tag
+      id: get_version
+      run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: SquashPicture ${{ github.ref }}
+        draft: false
+        prerelease: false
+        body: |
+          ## SquashPicture Release ${{ steps.get_version.outputs.version }}
+          
+          A lightweight image compression tool built with Avalonia UI.
+          
+          ### Downloads
+          
+          | Platform | File |
+          |----------|------|
+          | Linux x64 | `SquashPicture-linux-x64.tar.gz` |
+          
+          ### Installation
+          
+          #### Linux
+          ```bash
+          tar -xzf SquashPicture-linux-x64.tar.gz
+          ./install.sh
+          ```
+
+  build-linux:
+    needs: create-release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+    
+    - name: Publish Linux x64
+      run: |
+        dotnet publish src/SquashPicture/SquashPicture.csproj \
+          -c Release \
+          -r linux-x64 \
+          --self-contained true \
+          -p:PublishSingleFile=true \
+          -p:PublishTrimmed=true \
+          -o publish/linux-x64
+    
+    - name: Copy assets and create archive
+      run: |
+        cp install.sh publish/linux-x64/
+        cp src/SquashPicture/Assets/icons8-image-100.png publish/linux-x64/
+        cd publish/linux-x64
+        tar -czf SquashPicture-linux-x64.tar.gz SquashPicture *.so icons8-image-100.png install.sh 2>/dev/null || tar -czf SquashPicture-linux-x64.tar.gz SquashPicture icons8-image-100.png install.sh
+    
+    - name: Upload Linux Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: publish/linux-x64/SquashPicture-linux-x64.tar.gz
+        asset_name: SquashPicture-linux-x64.tar.gz
+        asset_content_type: application/gzip
